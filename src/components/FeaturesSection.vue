@@ -1,11 +1,7 @@
 <template>
   <div id="features-section">
     <div class="content-container">
-      <img
-        src="/src/assets/images/illustration-laptop-desktop.svg"
-        alt="illustration"
-        class="illustration"
-      />
+      <img :src="laptopImage" class="laptop-illustration" alt="Laptop Image" />
       <div class="text">
         <h3>Free, open, simple</h3>
         <p>
@@ -25,13 +21,41 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed, reactive, onMounted, onBeforeUnmount } from 'vue'
+import LaptopImageDesktop from '../assets/images/illustration-laptop-desktop.svg'
+import LaptopImageMobile from '../assets/images/illustration-laptop-mobile.svg'
+const laptopImage = computed(() => {
+  return isDesktop.value ? LaptopImageDesktop : LaptopImageMobile
+})
+
+const windowSize = reactive({
+  width: window.innerWidth,
+  height: window.innerHeight,
+})
+
+const updateWindowSize = () => {
+  windowSize.width = window.innerWidth
+  windowSize.height = window.innerHeight
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateWindowSize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowSize)
+})
+
+const isDesktop = computed(() => {
+  return windowSize.width >= 1180
+})
+</script>
 
 <style scoped>
 #features-section {
   max-width: 1110px;
-
-  margin: auto;
+  margin: 6rem auto auto;
   height: 56rem;
 }
 
@@ -52,7 +76,7 @@
   max-width: 50%;
   gap: 1rem;
 }
-.illustration {
+.laptop-illustration {
   position: relative;
   left: 0;
   margin-left: -40%;
@@ -90,6 +114,8 @@ p:last-child {
 @media (max-width: 1180px) {
   #features-section {
     margin: 0 24px;
+    min-height: 56rem;
+    height: auto;
   }
   h2 {
     font-size: 46px;
@@ -97,19 +123,36 @@ p:last-child {
 }
 
 @media (max-width: 768px) {
-  h2 {
+  .content-container {
+    flex-direction: column;
+  }
+  .laptop-illustration {
+    position: relative;
+    left: 0;
+    margin-left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: 1;
+    overflow: hidden;
+    padding: 4rem 0;
+  }
+  .text {
     text-align: center;
+    max-width: 100%;
+  }
+  p {
+    letter-spacing: 0.2px;
+    word-spacing: 0.5px;
   }
   .features-cards {
-    padding: 1.5rem 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 3.5rem;
   }
-  .features-card {
-    justify-items: center;
-    text-align: center;
-  }
+
   .features-title {
     padding-top: 3rem;
   }
