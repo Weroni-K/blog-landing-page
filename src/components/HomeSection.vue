@@ -3,43 +3,20 @@
     <div class="content-container">
       <h1>A modern publishing platform</h1>
       <p>Grow your audience and build your online brand</p>
-      <a href="./">
-        <button class="start-free-button">Start for Free</button>
-        <button class="learn-more-button">Learn More</button>
-      </a>
+      <div class="buttons">
+        <a href="./">
+          <button class="start-free-button">Start for Free</button>
+        </a>
+        <a href="./">
+          <button class="learn-more-button">Learn More</button>
+        </a>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { computed, reactive, onMounted, onBeforeUnmount } from 'vue'
+<script setup></script>
 
-// const introImage = computed(() => {
-//   return isDesktop.value ? IntroImageDesktop : IntroImageMobile
-// })
-
-const windowSize = reactive({
-  width: window.innerWidth,
-  height: window.innerHeight,
-})
-
-const updateWindowSize = () => {
-  windowSize.width = window.innerWidth
-  windowSize.height = window.innerHeight
-}
-
-onMounted(() => {
-  window.addEventListener('resize', updateWindowSize)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateWindowSize)
-})
-
-const isDesktop = computed(() => {
-  return windowSize.width >= 1180
-})
-</script>
 <style scoped>
 #home-section {
   position: relative;
@@ -105,11 +82,22 @@ p {
   #home-section {
     padding-inline: 24px;
   }
+  h1 {
+    font-size: 48px;
+  }
 }
 @media (max-width: 768px) {
   .content-container {
     text-align: center;
     font-weight: var(--font-weight-400);
+  }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .start-free-button {
+    margin-right: 0;
   }
   h1 {
     font-size: 34px;

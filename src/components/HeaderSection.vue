@@ -134,7 +134,6 @@ onUnmounted(() => {
 
 .navbar {
   height: 4rem;
-  padding: 2rem 0;
   display: flex;
   align-items: center;
   gap: 4rem;
@@ -296,6 +295,11 @@ onUnmounted(() => {
     .line-bottom {
       transform: translateY(-4px) rotate(-45deg);
     }
+  }
+}
+@media (max-width: 1175px) {
+  #header-section {
+    margin-inline: 24px;
   }
 }
 @media (max-width: 768px) {
