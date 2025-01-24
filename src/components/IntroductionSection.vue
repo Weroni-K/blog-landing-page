@@ -17,16 +17,41 @@
           this functionality, you’re in full control.
         </p>
       </div>
-      <!-- <img
-        src="/src/assets/images/illustration-editor-desktop.svg"
-        alt="illustration"
-        class="illustration"
-      /> -->
+      <img :src="editorImage" class="editor-illustration" alt="Editor Image" />
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed, reactive, onMounted, onBeforeUnmount } from 'vue'
+import EditorImageDesktop from '../assets/images/illustration-editor-desktop.svg'
+import EditorImageMobile from '../assets/images/illustration-editor-mobile.svg'
+const editorImage = computed(() => {
+  return isDesktop.value ? EditorImageDesktop : EditorImageMobile
+})
+
+const windowSize = reactive({
+  width: window.innerWidth,
+  height: window.innerHeight,
+})
+
+const updateWindowSize = () => {
+  windowSize.width = window.innerWidth
+  windowSize.height = window.innerHeight
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateWindowSize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowSize)
+})
+
+const isDesktop = computed(() => {
+  return windowSize.width >= 1180
+})
+</script>
 
 <style scoped>
 #find-out-section {
@@ -51,7 +76,7 @@
   max-width: 50%;
   gap: 1rem;
 }
-.illustration {
+.editor-illustration {
   position: relative;
   right: 0;
   margin-right: -40%;
