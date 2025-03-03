@@ -11,37 +11,41 @@
             v-for="(link, index) in menuLinks"
             :key="index"
             class="nav-link"
-            @mouseover="toggleSubMenu(index, true)"
-            @mouseleave="toggleSubMenu(index, false)"
+            :class="{ 'submenu-open': link.showSubMenu }"
+            @mouseenter="windowWidth > 1000 && toggleSubMenu(index, true)"
+            @mouseleave="windowWidth > 1000 && toggleSubMenu(index, false)"
           >
             <a
               :href="link.url"
               class="menu-link"
-              @mouseover="link.showSubMenu = true"
-              @mouseleave="link.showSubMenu = false"
-              ><p>
-                {{ link.text }}
-              </p>
+              @click.prevent="windowWidth <= 1000 && toggleSubMenu(index, !link.showSubMenu)"
+            >
+              <p>{{ link.text }}</p>
               <img
-                src="/src/assets/icons/icon-arrow-light.svg"
+                :src="iconArrow"
                 alt="Dropdown arrow"
                 class="arrow-icon"
                 :class="{ rotate: link.showSubMenu }"
               />
-              <ul v-if="link.showSubMenu" class="submenu">
-                <li v-for="(subLink, i) in link.submenu" :key="i">
-                  <a :href="subLink.url" class="submenu-link">{{ subLink.text }}</a>
-                </li>
-              </ul>
             </a>
+
+            <ul
+              v-if="link.showSubMenu"
+              class="submenu"
+              @mouseenter="windowWidth > 1000 && toggleSubMenu(index, true)"
+              @mouseleave="windowWidth > 1000 && toggleSubMenu(index, false)"
+            >
+              <li v-for="(subLink, i) in link.submenu" :key="i">
+                <a :href="subLink.url" class="submenu-link">{{ subLink.text }}</a>
+              </li>
+            </ul>
           </div>
         </div>
         <div class="nav-buttons">
           <button class="login-button">Login</button>
-          <button class="start-free-button">Sign Up</button>
+          <button class="sign-button">Sign Up</button>
         </div>
       </div>
-
       <button
         class="burger"
         @click="toggleMenu"
@@ -58,7 +62,35 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed, reactive, onBeforeUnmount } from 'vue'
+import IconArrowLight from '../assets/icons/icon-arrow-light.svg'
+import IconArrowDark from '../assets/icons/icon-arrow-dark.svg'
+
+const iconArrow = computed(() => {
+  return isDesktop.value ? IconArrowLight : IconArrowDark
+})
+
+const windowSize = reactive({
+  width: window.innerWidth,
+  height: window.innerHeight,
+})
+
+const updateWindowSize = () => {
+  windowSize.width = window.innerWidth
+  windowSize.height = window.innerHeight
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateWindowSize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowSize)
+})
+
+const isDesktop = computed(() => {
+  return windowSize.width >= 1180
+})
 
 const menuLinks = ref([
   {
@@ -105,7 +137,9 @@ const toggleMenu = () => {
 }
 
 const toggleSubMenu = (index, status) => {
-  menuLinks.value[index].showSubMenu = status
+  menuLinks.value.forEach((link, i) => {
+    link.showSubMenu = i === index ? status : false
+  })
 }
 
 const handleResize = () => {
@@ -139,12 +173,14 @@ onUnmounted(() => {
   gap: 4rem;
 }
 
+.insure-logo {
+  width: 7rem;
+}
+
 .no-scroll {
   overflow: hidden;
 }
-.logo img {
-  width: 7rem;
-}
+
 .nav-links {
   margin: 0;
   padding: 0;
@@ -154,8 +190,7 @@ onUnmounted(() => {
   justify-content: space-between;
   gap: 2rem;
   color: var(--color-neutral-dark-greyish-violet);
-
-  z-index: 2;
+  z-index: 20;
   p {
     font-size: 16px;
     font-weight: var(--font-weight-700);
@@ -166,37 +201,45 @@ onUnmounted(() => {
   }
 }
 
+.nav-link.submenu-open .submenu {
+  display: block !important; /* Ensure submenu is shown when toggled */
+}
+
 .nav-link {
   position: relative;
   cursor: pointer;
   display: ruby;
+  padding-bottom: 1rem;
 }
 
-.arrow-icon {
-  margin-left: 0.25rem;
-  width: 12px;
-  height: 8px;
-  transition: transform 0.3s ease;
-  vertical-align: middle;
+/* Show submenu when hovering over the parent nav-link */
+.nav-link:hover .submenu {
+  display: block;
 }
 
-.rotate {
-  transform: rotate(180deg);
+.nav-link:hover .submenu,
+.submenu:hover {
+  display: block;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2rem;
 }
 
 .submenu {
   position: absolute;
-  top: 2.5rem;
+  top: 100%;
   left: -1.5rem;
   width: 10rem;
   height: auto;
-  display: none;
+  color: var(--color-bg-footer);
   background-color: var(--color-text-body-white);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem 1.5rem;
   border-radius: 0.25rem;
   z-index: 20;
-  color: var(--color-bg-footer);
+  display: none;
 }
 
 .menu-link:hover .submenu {
@@ -218,9 +261,16 @@ onUnmounted(() => {
   font-weight: var(--font-weight-700);
 }
 
-.nav-menu {
-  display: flex;
-  gap: 2rem;
+.arrow-icon {
+  margin-left: 0.25rem;
+  width: 12px;
+  height: 8px;
+  transition: transform 0.3s ease;
+  vertical-align: middle;
+}
+
+.rotate {
+  transform: rotate(180deg);
 }
 
 .nav-buttons {
@@ -242,7 +292,7 @@ onUnmounted(() => {
   color: var(--color-text-cta);
 }
 
-.start-free-button {
+.sign-button {
   height: 3rem;
   width: 8.75rem;
   padding: 8px 0;
@@ -252,7 +302,7 @@ onUnmounted(() => {
   font-weight: var(--font-weight-700);
 }
 
-.start-free-button:hover {
+.sign-button:hover {
   cursor: pointer;
   color: var(--color-text-body-white);
   background-color: var(--color-bg-cta-hover);
@@ -297,14 +347,19 @@ onUnmounted(() => {
     }
   }
 }
+
 @media (max-width: 1175px) {
   #header-section {
     margin-inline: 24px;
   }
 }
+
 @media (max-width: 768px) {
   #header-section {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0;
+  }
+  .insure-logo {
+    width: 5rem;
   }
   .navbar {
     height: 6rem;
@@ -323,7 +378,6 @@ onUnmounted(() => {
       color: var(--color-neutral-dark-greyish-violet);
     }
   }
-
   .nav-links.active {
     position: absolute;
     top: 6rem;
@@ -349,31 +403,40 @@ onUnmounted(() => {
   .nav-buttons {
     flex-direction: column;
   }
-  .view-plans-button {
-    width: calc(100% - 48px);
-    color: var(--color-neutral-light-grey);
-    border: 2px solid var(--color-neutral-light-grey);
-    font-weight: var(--font-weight-400);
+  .sign-button {
+    color: var(--color-text-body-white);
+    background: var(--color-bg-gradient-intro);
   }
-
-  .view-plans-button:hover {
-    color: var(--color-neutral-very-dark-violet);
-    background-color: var(--color-neutral-light-grey);
+  .sign-button:hover {
+    background: var(--color-bg-cta-hover);
   }
-
   .burger {
     display: flex;
     position: absolute;
     right: 24px;
   }
-}
-
-@media (max-width: 768px) {
-  #header-section {
-    padding-inline: 24px;
+  /* Accordion styles for small screens */
+  .nav-link.submenu-open {
+    opacity: 0.7;
   }
-  .logo img {
-    width: 5rem;
+  .submenu {
+    position: relative; /* Remove absolute positioning */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the container */
+    box-shadow: none; /* Optional: Remove shadow for accordion style */
+    margin-top: 0.5rem; /* Add spacing between menu items */
+    display: block; /* Ensure submenu takes up space */
+    background-color: var(--color-text-footer);
+  }
+  .submenu li {
+    margin: 0.25rem 0;
+  }
+  .nav-link {
+    text-align: center;
+  }
+  .nav-links.active {
+    flex-direction: column; /* Ensure nav links stack vertically */
   }
 }
 </style>
