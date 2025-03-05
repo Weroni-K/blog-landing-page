@@ -12,13 +12,13 @@
             :key="index"
             class="nav-link"
             :class="{ 'submenu-open': link.showSubMenu }"
-            @mouseenter="windowWidth > 1000 && toggleSubMenu(index, true)"
-            @mouseleave="windowWidth > 1000 && toggleSubMenu(index, false)"
+            @mouseenter="windowWidth > 768 && toggleSubMenu(index, true)"
+            @mouseleave="windowWidth > 768 && toggleSubMenu(index, false)"
           >
             <a
               :href="link.url"
               class="menu-link"
-              @click.prevent="windowWidth <= 1000 && toggleSubMenu(index, !link.showSubMenu)"
+              @click.prevent="windowWidth <= 768 && toggleSubMenu(index, !link.showSubMenu)"
             >
               <p>{{ link.text }}</p>
               <img
@@ -32,8 +32,8 @@
             <ul
               v-if="link.showSubMenu"
               class="submenu"
-              @mouseenter="windowWidth > 1000 && toggleSubMenu(index, true)"
-              @mouseleave="windowWidth > 1000 && toggleSubMenu(index, false)"
+              @mouseenter="windowWidth > 768 && toggleSubMenu(index, true)"
+              @mouseleave="windowWidth > 768 && toggleSubMenu(index, false)"
             >
               <li v-for="(subLink, i) in link.submenu" :key="i">
                 <a :href="subLink.url" class="submenu-link">{{ subLink.text }}</a>
@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
 })
 
 const isDesktop = computed(() => {
-  return windowSize.width >= 1180
+  return windowSize.width >= 768
 })
 
 const menuLinks = ref([
@@ -202,17 +202,17 @@ onUnmounted(() => {
 }
 
 .nav-link.submenu-open .submenu {
-  display: block !important; /* Ensure submenu is shown when toggled */
+  display: block !important;
 }
 
 .nav-link {
+  margin-top: 1rem;
   position: relative;
   cursor: pointer;
   display: ruby;
   padding-bottom: 1rem;
 }
 
-/* Show submenu when hovering over the parent nav-link */
 .nav-link:hover .submenu {
   display: block;
 }
@@ -420,13 +420,13 @@ onUnmounted(() => {
     opacity: 0.7;
   }
   .submenu {
-    position: relative; /* Remove absolute positioning */
+    position: relative;
     top: 0;
     left: 0;
-    width: 100%; /* Full width of the container */
-    box-shadow: none; /* Optional: Remove shadow for accordion style */
-    margin-top: 0.5rem; /* Add spacing between menu items */
-    display: block; /* Ensure submenu takes up space */
+    width: 100%;
+    box-shadow: none;
+    margin-top: 0.5rem;
+    display: block;
     background-color: var(--color-text-footer);
   }
   .submenu li {
@@ -436,7 +436,7 @@ onUnmounted(() => {
     text-align: center;
   }
   .nav-links.active {
-    flex-direction: column; /* Ensure nav links stack vertically */
+    flex-direction: column;
   }
 }
 </style>
