@@ -41,6 +41,7 @@
             </ul>
           </div>
         </div>
+        <hr class="horizontal-line" />
         <div class="nav-buttons">
           <button class="login-button">Login</button>
           <button class="sign-button">Sign Up</button>
@@ -347,6 +348,9 @@ onUnmounted(() => {
     }
   }
 }
+.horizontal-line {
+  display: none;
+}
 
 @media (max-width: 1175px) {
   #header-section {
@@ -399,9 +403,12 @@ onUnmounted(() => {
   }
   .nav-menu {
     flex-direction: column;
+    gap: 0rem;
+    width: 100%;
   }
   .nav-buttons {
     flex-direction: column;
+    gap: 1.5rem;
   }
   .sign-button {
     color: var(--color-text-body-white);
@@ -431,12 +438,32 @@ onUnmounted(() => {
   }
   .submenu li {
     margin: 0.25rem 0;
+    a {
+      font-size: 16px;
+      font-family: var(--font-body);
+      font-weight: var(--font-weight-600);
+      color: var(--color-text-headings);
+    }
   }
   .nav-link {
     text-align: center;
+    margin: 0;
+    p {
+      font-size: 20px;
+    }
   }
   .nav-links.active {
     flex-direction: column;
+    height: auto;
+    gap: 1rem;
+  }
+  .horizontal-line {
+    display: block;
+    width: 100%;
+    border: none;
+    border-top: 1px solid var(--color-text-footer); /* Grey line */
+    margin-bottom: 1rem;
+    opacity: 0.8;
   }
 }
 </style>
