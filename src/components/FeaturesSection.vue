@@ -48,7 +48,7 @@ onBeforeUnmount(() => {
 })
 
 const isDesktop = computed(() => {
-  return windowSize.width >= 1180
+  return windowSize.width >= 768
 })
 </script>
 
@@ -113,8 +113,7 @@ p:last-child {
 
 @media (max-width: 1180px) {
   #features-section {
-    margin: 0 24px;
-    min-height: 56rem;
+    margin: 5rem 24px;
     height: auto;
   }
   h2 {
@@ -136,7 +135,7 @@ p:last-child {
     object-fit: cover;
     z-index: 1;
     overflow: hidden;
-    padding: 4rem 0;
+    padding: 2rem 0;
   }
   .text {
     text-align: center;
