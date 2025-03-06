@@ -65,17 +65,20 @@ const isDesktop = computed(() => {
   justify-content: space-between;
   align-items: center;
 }
+
 .title {
   position: relative;
   text-align: center;
   top: 8rem;
 }
+
 .text {
   display: flex;
   flex-direction: column;
   max-width: 50%;
   gap: 1rem;
 }
+
 .laptop-illustration {
   position: relative;
   left: 0;
@@ -113,7 +116,7 @@ p:last-child {
 
 @media (max-width: 1180px) {
   #features-section {
-    margin: 5rem 24px;
+    margin: 5rem 0;
     height: auto;
   }
   h2 {
@@ -128,18 +131,17 @@ p:last-child {
   .laptop-illustration {
     position: relative;
     left: 0;
-    margin-left: 0;
     top: 0;
     height: 100%;
-    width: 100%;
-    object-fit: cover;
+    aspect-ratio: 1;
     z-index: 1;
     overflow: hidden;
-    padding: 2rem 0;
+    margin: 2rem 0;
   }
   .text {
     text-align: center;
     max-width: 100%;
+    margin-inline: 24px;
   }
   p {
     letter-spacing: 0.2px;
@@ -151,7 +153,6 @@ p:last-child {
     flex-direction: column;
     gap: 3.5rem;
   }
-
   .features-title {
     padding-top: 3rem;
   }
