@@ -94,6 +94,8 @@ p {
   .buttons {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .start-free-button {
     margin-right: 0;
@@ -105,6 +107,14 @@ p {
   }
   p {
     font-size: 18px;
+  }
+}
+@media (max-width: 175px) {
+  .start-free-button,
+  .learn-more-button {
+    width: auto;
+    height: auto;
+    padding: 8px;
   }
 }
 </style>

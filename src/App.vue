@@ -56,4 +56,10 @@ import FooterSection from './components/FooterSection.vue'
     height: 37.5rem;
   }
 }
+@media (max-width: 250px) {
+  #background-intro {
+    height: auto;
+    padding-bottom: 2rem;
+  }
+}
 </style>
