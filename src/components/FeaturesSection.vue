@@ -125,6 +125,9 @@ p:last-child {
 }
 
 @media (max-width: 768px) {
+  #features-section {
+    margin-top: 2rem;
+  }
   .content-container {
     flex-direction: column;
   }
