@@ -104,16 +104,6 @@ p:last-child {
   padding-bottom: 0;
 }
 
-.features-title {
-  padding: 4rem 0;
-}
-
-.features-cards {
-  columns: 3;
-  padding: 2rem 0;
-  gap: 2rem;
-}
-
 @media (max-width: 1180px) {
   #features-section {
     margin: 5rem 0;
@@ -149,15 +139,6 @@ p:last-child {
   p {
     letter-spacing: 0.2px;
     word-spacing: 0.5px;
-  }
-  .features-cards {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 3.5rem;
-  }
-  .features-title {
-    padding-top: 3rem;
   }
 }
 </style>
